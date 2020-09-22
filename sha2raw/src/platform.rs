@@ -70,8 +70,14 @@ impl Implementation {
             }
             #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
             Platform::Sha => {
-                use crate::sha256_intrinsics;
-                unsafe { sha256_intrinsics::compress256(state, blocks) };
+                let mut buffer = [0u8; 64];
+                for block in blocks.chunks(2) {
+                    buffer[..32].copy_from_slice(&block[0]);
+                    buffer[32..].copy_from_slice(&block[1]);
+                    sha2_asm::compress256(state, &buffer);
+                }
+//                 use crate::sha256_intrinsics;
+//                 unsafe { sha256_intrinsics::compress256(state, blocks) };
             }
             #[cfg(feature = "asm")]
             Platform::Asm => {
