@@ -294,7 +294,7 @@ impl<'a, Tree: 'static + MerkleTreeTrait, G: 'static + Hasher> StackedDrg<'a, Tr
         config: StoreConfig,
     ) -> Result<(LabelsCache<Tree>, Labels<Tree>)> {
         info!("generate labels");
-
+        info!("kang----------------------------------------------------------------------------------");
         let layers = layer_challenges.layers();
         // For now, we require it due to changes in encodings structure.
         let mut labels: Vec<DiskStore<<Tree::Hasher as Hasher>::Domain>> =
